@@ -1,0 +1,44 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           MoscowFlat
+    theme:                 myadmin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          gallery
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+    
+    show_top_batch_actions:   true
+    show_top_form_actions:    true
+
+    config:
+      actions: ~
+      fields:
+        nb_pics:          { label: 'Кол-во фото' }
+        upload:           { label: 'Кол-во фото' }
+      list:
+        table_method:     retrieveBackendMoscowFlatList
+        title:            Список московских квартир
+        display:          [ =id, tmp_id, _upload, rooms, =full_address, full_square, price_rur, price_m2, published_at,  is_published ]
+        actions:
+          upload_excel:   { label: Загрузить XLS с квартирами }
+          import_excel:   { label: Обработать загруженный XLS файл }
+          upload_pics:    { label: Загрузить Zip файл с картинками }
+          import_pics:    { label: Обработать загруженный Zip файл }
+      filter: ~
+#        display:          [ title, published_at, is_published ]
+      form:
+        class:            MoscowFlatFormAdmin
+        actions:
+          _delete:        { label: Удалить }
+          _list:          { label: Список квартир }
+          _save:          { label: Сохранить }
+          _save_and_add:  { label: Сохранить и добавить }
+          _save_and_list: { label: Сохранить и к списку }
+      edit:
+        title:            Редактировать квартиру
+      new:
+        title:            Добавить квартиру

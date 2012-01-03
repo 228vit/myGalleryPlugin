@@ -1,0 +1,7 @@
+all:
+  is_secure:    false
+  credentials:  [[admin, manager]]
+
+flashUploadPics:
+  is_secure:    false
+  

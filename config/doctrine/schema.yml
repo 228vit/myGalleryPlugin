@@ -1,0 +1,11 @@
+options:
+  collate: utf8_unicode_ci
+  charset: utf8
+
+Gallery:
+  actAs:
+    Timestampable: ~
+  columns:
+    pic:            { type: string(127) }
+    pos:            { type: integer, default: 0 }
+    note:           { type: string(255) }
