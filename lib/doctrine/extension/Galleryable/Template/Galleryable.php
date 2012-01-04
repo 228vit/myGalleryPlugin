@@ -16,7 +16,7 @@ class Doctrine_Template_Galleryable extends Doctrine_Template
     return $this->getNbGallerys() > 0;
   }
   
-  public function getNbGallerys()
+  public function getNbPicsInGallery()
   {
     return $this->getGallerysQuery()->count();
   }
