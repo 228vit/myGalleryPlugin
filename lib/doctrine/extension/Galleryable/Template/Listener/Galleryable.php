@@ -1,8 +1,9 @@
 <?php
 
-class Doctrine_Template_Listener_Galleryable extends Doctrine_Record_Listener
+class Galleryable_Listener extends Doctrine_Record_Listener
 {
-
+  protected $_options;
+  
   public function __construct($options = array())
   {
     $this->_options = $options;

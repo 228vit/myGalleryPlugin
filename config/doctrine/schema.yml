@@ -9,3 +9,10 @@ Gallery:
     pic:            { type: string(127) }
     pos:            { type: integer, default: 0 }
     note:           { type: string(255) }
+    model_name:     { type: string(127) }
+    model_id:       { type: integer(4) }
+  indexes:
+    model:
+      fields: [model_id]
+    galleryable:
+      fields: [model_name, model_id]
