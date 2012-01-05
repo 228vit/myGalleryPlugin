@@ -13,9 +13,9 @@ class myGalleryPluginConfiguration extends sfPluginConfiguration
   public function initialize()
   {
     $this->dispatcher->connect('routing.load_configuration', array('myGalleryRouting', 'listenToRoutingLoadConfigurationEvent'));
-    if (in_array('commentAdmin', sfConfig::get('sf_enabled_modules', array())))
+    if (in_array('gallery', sfConfig::get('sf_enabled_modules', array())))
     {
-      $this->dispatcher->connect('routing.load_configuration', array('myGalleryRouting', 'addRouteForAdminComments'));
+      $this->dispatcher->connect('routing.load_configuration', array('myGalleryRouting', 'addRouteForGallery'));
     }
   }
 

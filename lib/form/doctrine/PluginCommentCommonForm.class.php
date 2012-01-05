@@ -5,7 +5,7 @@
  *
  * @package    myGalleryPlugin
  * @subpackage form
- * @author     Jean-Philippe MORVAN <jp.morvan@ville-villejuif.fr>
+ * @author     228vit@gmail.com
  * @version    12 mars 2010 10:09:18
  */
 class PluginCommentCommonForm extends BaseCommentForm

@@ -3,7 +3,7 @@
  * myGalleryPlugin routing.
  *
  * @package    myGalleryPlugin
- * @author     Jean-Philippe MORVAN <jp.morvan@ville-villejuif.fr>
+ * @author     228vit@gmail.com
  */
 class myGalleryRouting
 {
@@ -18,12 +18,21 @@ class myGalleryRouting
     $r = $event->getSubject();
 
     $r->prependRoute(
-            'comment_reported',
-            new sfRoute(
-                    '/comment-reported',
-                    array('module' => 'comment', 'action' => 'reported')
-            )
+      'gallery_view',
+      new sfRoute(
+        '/gallery_view',
+        array('module' => 'gallery', 'action' => 'view')
+      )
     );
+    
+    $r->prependRoute(
+      'gallery_upload_pics',
+      new sfRoute(
+        '/gallery_upload_pics',
+        array('module' => 'galleryAdmin', 'action' => 'flashUploadPics')
+      )
+    );
+    
     $r->prependRoute(
             'comment_reporting',
             new sfRoute(
@@ -40,7 +49,7 @@ class myGalleryRouting
    * @param sfEvent $event
    * @static
    */
-  static public function addRouteForAdminComments(sfEvent $event)
+  static public function addRouteForGallery(sfEvent $event)
   {
     $event->getSubject()->prependRoute('commentAdmin', new sfDoctrineRouteCollection(array(
       'name'                => 'commentAdmin',

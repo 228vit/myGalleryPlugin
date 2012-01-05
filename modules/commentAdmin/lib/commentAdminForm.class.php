@@ -5,7 +5,7 @@
  *
  * @package    myGalleryPlugin
  * @subpackage commentAdmin
- * @author     Jean-Philippe MORVAN <jp.morvan@ville-villejuif.fr>
+ * @author     228vit@gmail.com
  * @version    4 mars 2010 10:45:36
  */
 class commentAdminForm extends PluginCommentCommonForm

@@ -50,6 +50,14 @@ class BaseGalleryComponents extends sfComponents
 
   public function executeEdit(sfWebRequest $request)
   {
+    $this->getResponse()->addJavascript(sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js'). '/jquery.fancybox.pack.js', 'last');
+    $this->getResponse()->addJavascript(sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js'). '/swfobject.js', 'last');
+    $this->getResponse()->addJavascript(sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js'). '/jquery.uploadify.v2.1.4.min.js', 'last');
+    
+    $this->getResponse()->addStylesheet(sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/jquery.fancybox.css', 'last');
+    $this->getResponse()->addStylesheet(sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/uploadify.css', 'last');
+    $this->getResponse()->addStylesheet(sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/gallery.css', 'last');
+            
     if ($this->hasGallery = $this->object->hasGallery())
     {
       $this->gallery = $this->object->getGallery($sort = 'asc');

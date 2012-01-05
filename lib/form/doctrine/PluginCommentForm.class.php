@@ -5,7 +5,7 @@
  *
  * @package    myGalleryPlugin
  * @subpackage form
- * @author     Jean-Philippe MORVAN <jp.morvan@ville-villejuif.fr>
+ * @author     228vit@gmail.com
  * @version    SVN: $Id$
  */
 

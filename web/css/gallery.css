@@ -1,0 +1,12 @@
+ul.gallery {
+    margin: 0;
+}
+ul.gallery li {
+    border: 1px solid gray;
+    display: inline;
+    float: left;
+    font-size: 9px;
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+}

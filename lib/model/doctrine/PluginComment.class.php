@@ -5,7 +5,7 @@
  *
  * @package    myGalleryPlugin
  * @subpackage model
- * @author     Jean-Philippe MORVAN <jp.morvan@ville-villejuif.fr>
+ * @author     228vit@gmail.com
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
 abstract class PluginComment extends BaseComment

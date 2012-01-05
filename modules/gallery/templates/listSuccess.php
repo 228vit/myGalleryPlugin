@@ -1,4 +1,4 @@
-<h1 style="margin: 0;">Галерея фото <?php echo count($gallery); echo get_class($object->getRawValue())  ?></h1>
+<h1 style="margin: 0;">Галерея фото</h1>
 <?php if ($gallery): ?>
 <div>
 <ul class='gallery'>
@@ -45,12 +45,10 @@
   bindDeleteAction();
   
   $('#file_upload').uploadify({
-    'uploader'      : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/uploadify.swf' ?>",
-    'script'        : "<?php echo url_for(array(
-        'sf_route'    => 'gallery_upload_pics',
-        'model_id'    => $object->get('id'), 'model_name' => get_class($object->getRawValue()),
-    )) ?>",
-    'cancelImg'     : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/uploadify/cancel.png' ?>",
+    'uploader'      : '/uploadify/uploadify.swf',
+//    'script'    : '/uploadify/uploadify.php',
+    'script'        : "<?php echo url_for('/backend_dev.php/gallery/flashUploadPics?id='.$sf_params->get('id', 0)) ?>",
+    'cancelImg'     : '/uploadify/cancel.png',
     'folder'        : '/uploads',
     'auto'          : false,
     'multi'         : true,
