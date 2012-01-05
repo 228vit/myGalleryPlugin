@@ -1,17 +1,16 @@
 <?php
 
-require_once dirname(__FILE__).'/../lib/galleryGeneratorConfiguration.class.php';
-require_once dirname(__FILE__).'/../lib/galleryGeneratorHelper.class.php';
+require_once dirname(__FILE__).'/../lib/BaseGalleryActions.class.php';
 
 /**
  * gallery actions.
  *
- * @package    miel
+ * @package    myGalleryPlugin
  * @subpackage gallery
- * @author     Your name here
+ * @author     228vit
  * @version    SVN: $Id: actions.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class galleryActions extends autoMoscow_flatActions
+class galleryActions extends BaseGalleryActions
 {
   
   public function executeDeletePic(sfWebRequest $request)
@@ -19,7 +18,7 @@ class galleryActions extends autoMoscow_flatActions
     $id = $request->getParameter('id', 0);
     // TODO: check if pic removed
     $res = Doctrine_Query::create()
-            ->delete('FlatGallery fg')
+            ->delete('Gallery fg')
             ->where('fg.id = ?', $id)
             ->execute()
     ;

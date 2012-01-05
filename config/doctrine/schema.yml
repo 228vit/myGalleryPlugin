@@ -5,6 +5,7 @@ options:
 Gallery:
   actAs:
     Timestampable: ~
+    Sortable: ~
   columns:
     pic:            { type: string(127) }
     pos:            { type: integer, default: 0 }

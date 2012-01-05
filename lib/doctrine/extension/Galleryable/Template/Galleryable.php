@@ -11,14 +11,14 @@ class Doctrine_Template_Galleryable extends Doctrine_Template
 //  {
 //  }
   
-  public function hasGallerys()
+  public function hasGallery()
   {
-    return $this->getNbGallerys() > 0;
+    return $this->getNbPicsInGallery() > 0;
   }
   
   public function getNbPicsInGallery()
   {
-    return $this->getGallerysQuery()->count();
+    return $this->getGalleryQuery()->count();
   }
   
   public function addGallery(Gallery $Gallery)
@@ -30,17 +30,17 @@ class Doctrine_Template_Galleryable extends Doctrine_Template
     return $this->_invoker;
   }
 
-  public function getAllGallerys($order = 'ASC')
+  public function getGallery($order = 'ASC')
   {
-    return $this->getGallerysQuery($order);
+    return $this->getGalleryQuery($order)->execute();
   }
 
-  public function getGallerysQuery($order = 'ASC')
+  public function getGalleryQuery($order = 'ASC')
   {
     $query = Doctrine::getTable('Gallery')->createQuery('c')
       ->where('c.model_id = ?', $this->_invoker->get('id'))
       ->andWhere('c.model_name = ?', $this->_invoker->getTable()->getComponentName())
-      ->orderBy('c.created_at '.strtoupper($order));
+      ->orderBy('c.position '.strtoupper($order));
 
 //    if(sfConfig::get( 'app_myGalleryPlugin_guardbind', false ))
 //    {

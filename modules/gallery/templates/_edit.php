@@ -1,9 +1,9 @@
-<h1 style="margin: 0;">Галерея фото</h1>
+<h1 style="margin: 0;">Галерея фото <?php echo count($gallery) ?></h1>
 <?php if ($gallery): ?>
 <div>
 <ul class='gallery'>
   <?php foreach ($gallery as $g): ?>
-    <?php include_partial('gallery/thumb', array('thumb' => $g, 'id' => $sf_params->get('id', 0))) ?>
+    <?php echo $g->id; include_partial('gallery/thumb', array('thumb' => $g, 'id' => $sf_params->get('id', 0))) ?>
   <?php endforeach; // ($gallery as $g): ?>
 </ul>
 </div>
