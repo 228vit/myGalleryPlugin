@@ -11,6 +11,94 @@
 class BaseGalleryAdminActions extends sfActions
 {
   
+  public function executeSort(sfWebRequest $request)
+  {
+    
+    $modelName  = $request->getParameter('model_name', '');
+    $modelId    = $request->getParameter('model_id', 0);
+    
+//    $firstItem = Doctrine_Query::create()
+//            ->from('Gallery g')
+//            ->where('g.model_name = ?', $modelName)
+//            ->addWhere('g.model_id = ?', $modelId)
+//            ->orderBy('g.position asc')
+//            ->fetchOne()
+//    ;
+    $lastItem = Doctrine_Query::create()
+            ->from('Gallery g')
+            ->where('g.model_name = ?', $modelName)
+            ->addWhere('g.model_id = ?', $modelId)
+            ->orderBy('g.position DESC')
+            ->fetchOne()
+    ;
+    
+    $pics = $request->getParameter('pic');
+    if (count($pics) > 0)
+    {
+      
+      $objects = Doctrine_Query::create()
+              ->from('Gallery g')
+              ->whereIn('g.id', $pics)
+              ->addWhere('g.model_name = ?', $modelName)
+              ->addWhere('g.model_id = ?', $modelId)
+              ->orderBy('g.position ASC')
+              ->execute()
+      ;
+      
+      $conn = Doctrine_Manager::connection();
+      $conn->beginTransaction();
+      
+//      foreach ($objects as $object) {
+      foreach ($pics as $id) {
+        $object = Doctrine_Core::getTable('Gallery')->find($id);
+        if ($object)
+        {
+          $this->logMessage('pic id: '.$object->id.' been sorted, moved down ', 'debug');
+          $object->moveToLast();
+        } else {
+            $this->logMessage('unexisting id detected: '.$id , 'error');
+        }
+//      $object->moveToPosition((int)$lastItem->position);
+      }
+      // commit transactions, if any in a stack
+      $conn->commit();
+    }
+    /* 
+     * $ids_list = implode(',', array_values($values));
+      $values_list = implode(',', array_keys($values));
+      $sql = 'UPDATE '.$table.' SET sortOrder = ELT(FIELD(id, '.$ids_list.'), '.$values_list.') WHERE id IN ('.$ids_list.')';
+     */    
+    
+    $isAjax = $this->getRequest()->isXmlHttpRequest();
+    if ($isAjax) {
+      $res = array(
+          'status'  => 'success',
+          'message' => 'Pictures was sorted sucessfully',
+//          'id'      => $id,
+      );
+      $data = implode(', ', $pics);
+      $this->logMessage('Sort data'.$data, 'debug');
+      echo json_encode($res);
+      die();
+    } 
+    else 
+    {
+      // do something if not ajax
+      $this->getUser()->setFlash('notice', 'Pictures was sorted sucessfully');
+      $referer = $request->getReferer();
+      if (empty($referer))
+      {
+        $referer = sfInflector::underscore($modelName).'/edit?id='.$modelId;
+      }
+      $this->redirect($referer);
+    }
+    
+//    $this->forward404Unless($startRec);
+//    $this->forward404Unless($endRec);
+    
+  }
+
+  
   public function executeDeletePic(sfWebRequest $request)
   {
     $id = $request->getParameter('id', 0);

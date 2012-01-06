@@ -23,7 +23,26 @@
 <script type="text/javascript">
   function bindDeleteAction() {
 		$( "ul.gallery" ).sortable({
+//      stop: function(event, ui) {
+//          alert("New position: " + ui.item.index());
+//      },      
       update : function () { 
+        $.ajax({
+          url: "<?php echo url_for(array(
+                    'sf_route'    => 'gallery_sort_pics',
+                    'model_id'    => $object->get('id'), 
+                    'model_name'  => get_class($object->getRawValue()),
+                )) ?>",
+          data: $(this).sortable('serialize'),
+          success: function(response) {
+//            alert(response);
+            var res = eval('('+response+')'); 
+            $('#status-message').text(res.message);
+          },
+          error: function (request, status, error) {
+            alert(request.responseText);
+          }
+        })
 //        alert($(this).sortable('serialize'));
 //        $("input#test-log").val($('#test-list').sortable('serialize')); 
       }
@@ -57,7 +76,8 @@
     'uploader'      : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/uploadify.swf' ?>",
     'script'        : "<?php echo url_for(array(
         'sf_route'    => 'gallery_upload_pics',
-        'model_id'    => $object->get('id'), 'model_name' => get_class($object->getRawValue()),
+        'model_id'    => $object->get('id'), 
+        'model_name' => get_class($object->getRawValue()),
     )) ?>",
     'scriptData'  : {
       'model_name':   "<?php echo get_class($object->getRawValue()) ?>",

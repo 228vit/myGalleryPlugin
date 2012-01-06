@@ -34,6 +34,14 @@ class myGalleryRouting
     );
     
     $r->prependRoute(
+      'gallery_sort_pics',
+      new sfRoute(
+        '/gallery_sort_pics',
+        array('module' => 'galleryAdmin', 'action' => 'sort')
+      )
+    );
+    
+    $r->prependRoute(
             'comment_reporting',
             new sfRoute(
                     '/report-a-comment/:id/:num',
