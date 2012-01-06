@@ -37,14 +37,13 @@
           success: function(response) {
 //            alert(response);
             var res = eval('('+response+')'); 
+            
             $('#status-message').text(res.message);
           },
           error: function (request, status, error) {
-            alert(request.responseText);
+            alert(' error! '+request.responseText);
           }
         })
-//        alert($(this).sortable('serialize'));
-//        $("input#test-log").val($('#test-list').sortable('serialize')); 
       }
     });
 		$( "ul.gallery" ).disableSelection();
@@ -89,9 +88,9 @@
     },         
     'cancelImg'     : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/cancel.png' ?>",
     'folder'        : '/uploads',
-    'auto'          : false,
     'multi'         : true,
     'auto'          : true,
+//    'buttonText'      : 'Выбрать файлы',
     'fileExt'         : '*.jpg;*.gif;*.png',
     'fileDesc'        : 'Image Files (.JPG, .GIF, .PNG)',
     'queueID'         : 'custom-queue',
@@ -104,24 +103,27 @@
       },  
     
     'onComplete': function(event, ID, fileObj, response, data) {
-//      alert('There are ' + data.fileCount + ' files remaining in the queue.');
       var res = eval('('+response+')'); // eval(response);
-//      alert('Server response is: ' + res.message)
-      alert('Server response is: ' + response + ' message: ' + res.message);
-//      var html = '<li id="pic_'+res.id+'"><img src="'+res.pic+'" />'
-      $('ul.gallery').append(res.html);
-      // we need update pics count in list
-      $('span#nb_pics_'+res.parent_id).html(res.nb_pics)
-      // unbind onClick again!!!
-      bindDeleteAction();
+      if (res.status == 'success') {
+        $('ul.gallery').append(res.html);
+        // we need update pics count in list
+        $('span#nb_pics_'+res.parent_id).html(res.nb_pics)
+        // unbind onClick again!!!
+        bindDeleteAction();
+      } else if (res.status == 'error') {
+        alert(res.message);
+        $('#status-message').text(res.message);
+        data.errors++;
+        data.filesUploaded--;
+      }
     },
     
     'onError'     : function (event,ID,fileObj,errorObj) {
       alert(errorObj.type + ' Error: ' + errorObj.info);
     },    
-    'onAllComplete'  : function(event,data) {
-        $('#status-message').text(data.filesUploaded + ' files uploaded, ' + data.errors + ' errors.');
-      }
+    'onAllComplete'  : function(event, data) {
+      $('#status-message').text(data.filesUploaded + ' files uploaded, ' + data.errors + ' errors.');
+    }
   
 });
 </script>

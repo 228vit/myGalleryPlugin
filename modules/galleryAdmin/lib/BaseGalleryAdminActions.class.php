@@ -170,9 +170,14 @@ class BaseGalleryAdminActions extends sfActions
         $ext = substr($_FILES['Filedata']['name'], -4);
 
         $newFileName = md5(rand(1111, 9999).time()).$ext;
-        $res = move_uploaded_file($tempFile, $uploadDirName."/".$newFileName);
-        if ($res)
+        $result = @move_uploaded_file($tempFile, $uploadDirName."/".$newFileName);
+        
+        $this->logMessage('moving result to '.$uploadDirName.'[['.intval($result).']]', 'debug');
+        
+        if (true === $result)
         {
+          $this->logMessage('am i alive?', 'debug');
+
           $pic = new Gallery();
           $pic->set('pic', $newFileName);
           $pic->set('model_id', $request->getParameter('model_id', 0));
@@ -191,53 +196,53 @@ class BaseGalleryAdminActions extends sfActions
             @unlink($uploadDirName."/".$newFileName);
             return $this->renderText(json_encode($res));
           }
+          
+          $this->logMessage('id: '.$request->getParameter('model_id', 0).' uploaded file: '.$newFileName , 'debug');
+
+          $path = implode('/', array_filter(array('uploads', 'galleries', $model_name, $newFileName)));
+
+          $thumb = thumbnail_crop($path, 50, 50, 'fake-pic.jpg', 'watermark-25.png');
+
+          $html = get_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
+          $this->logMessage('html: '.$html, 'debug');
+
+          $modelName  = $request->getParameter('model_name', 'nope');
+          $modelId    = $request->getParameter('model_id', 0);
+          // count nb_pics in gallery
+          $gallery = Doctrine_Query::create()
+                  ->from("Gallery g")
+                  ->where("g.model_id = ?", $modelId)
+                  ->addWhere("g.model_name = ?", $modelName)
+                  ->execute()
+          ;
+          $this->logMessage('id: '.$request->getParameter('model_id', 0).' cnt: '.count($gallery), 'debug');
+
+
+          $res = array(
+              'status'    => 'success',
+              'message'   => $newFileName. ' file uploaded sucessfully',
+              'thumb'     => $thumb,
+              'id'        => $pic->id,
+              'html'      => $html,
+              'parent_id' => $modelId,
+              'nb_pics'   => count($gallery)
+          );
+
         } // if moved file
-          
-        $this->logMessage('id: '.$request->getParameter('model_id', 0).' uploaded file: '.$newFileName , 'debug');
+        else
+        {
+          $this->logMessage('am i alive?'.$uploadDirName, 'debug');
+          $this->logMessage('unable move file to '.$uploadDirName, 'debug');
+          $res = array(
+              'status'    => 'error',
+              'message'   => 'unable move file to '.$uploadDirName.', check permissions! ',
+          );
+        }
+        $this->logMessage('res:'.  implode(',', $res), 'debug');
 
-        $path = implode('/', array_filter(array('uploads', 'galleries', $model_name, $newFileName)));
-
-        $thumb = thumbnail_crop($path, 50, 50, 'fake-pic.jpg', 'watermark-25.png');
-
-        $html = get_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
-        $this->logMessage('html: '.$html, 'debug');
+        echo json_encode($res); die();
         
-        $modelName  = $request->getParameter('model_name', 'nope');
-        $modelId    = $request->getParameter('model_id', 0);
-        // count nb_pics in gallery
-        $gallery = Doctrine_Query::create()
-                ->from("Gallery g")
-                ->where("g.model_id = ?", $modelId)
-                ->addWhere("g.model_name = ?", $modelName)
-                ->execute()
-        ;
-        $this->logMessage('id: '.$request->getParameter('model_id', 0).' cnt: '.count($gallery), 'debug');
-
-
-        $res = array(
-            'status'    => 'success',
-            'message'   => $newFileName. ' file uploaded sucessfully',
-            'thumb'     => $thumb,
-            'id'        => $pic->id,
-            'html'      => $html,
-            'parent_id' => $modelId,
-            'nb_pics'   => count($gallery)
-        );
-
-//          echo implode(',', $res); 
-        echo json_encode($res);
-        die();
-//          $this->outJson($res);
-//          
-//          throw new sfStopException();
-          
-//          die();
-        // } else {
-        // 	echo 'Invalid file type.';
-        // }
-      }
-      
-      die();
+      } // if any FILES
       
     } // if post
     else if ($request->isMethod('GET'))
