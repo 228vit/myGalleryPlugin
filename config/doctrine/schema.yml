@@ -6,6 +6,7 @@ Gallery:
   actAs:
     Timestampable: ~
     Sortable: ~
+#      uniqueBy: [model_name, model_id]      
   columns:
     pic:            { type: string(127) }
     pos:            { type: integer, default: 0 }

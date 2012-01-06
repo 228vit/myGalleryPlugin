@@ -1,14 +1,15 @@
 <h1 style="margin: 0;">Галерея фото <?php // echo count($gallery); echo get_class($object->getRawValue())  ?></h1>
-<?php if (isSet($gallery)): ?>
 <div>
 <ul class='gallery'>
-  <?php foreach ($gallery as $g): ?>
-    <?php include_partial('gallery/thumb', array('thumb' => $g, 'id' => $sf_params->get('id', 0))) ?>
+<?php if (isSet($gallery)): ?>
+  <?php foreach ($gallery as $pic): ?>
+    <?php $path = implode('/', array_filter(array('uploads', 'galleries', $model_name, $pic->pic))); ?>
+    <?php include_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path)) ?>
   <?php endforeach; // ($gallery as $g): ?>
+<?php endif; // ($gallery): ?>
 </ul>
 </div>
 <br clear="all" />
-<?php endif; // ($gallery): ?>
   
 <div id="status-message">Select some files to upload:</div>
 <div id="custom-queue"></div>
@@ -21,8 +22,16 @@
 </form>
 <script type="text/javascript">
   function bindDeleteAction() {
-    $('ul.gallery a').attr('onclick','');
-    $('ul.gallery a').click(function (){
+		$( "ul.gallery" ).sortable({
+      update : function () { 
+//        alert($(this).sortable('serialize'));
+//        $("input#test-log").val($('#test-list').sortable('serialize')); 
+      }
+    });
+		$( "ul.gallery" ).disableSelection();
+    
+    $('ul.gallery a.delLink').attr('onclick','');
+    $('ul.gallery a.delLink').click(function (){
       if (confirm('Вы уверены?')) {
         var $parent = $(this).parent();
         $.ajax({
@@ -53,8 +62,8 @@
     'scriptData'  : {
       'model_name':   "<?php echo get_class($object->getRawValue()) ?>",
       'model_id':     "<?php echo $object->get('id') ?>"
-    }, 
-    'cancelImg'     : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/uploadify/cancel.png' ?>",
+    },         
+    'cancelImg'     : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/cancel.png' ?>",
     'folder'        : '/uploads',
     'auto'          : false,
     'multi'         : true,
