@@ -1,29 +1,35 @@
 <?php
 
 /**
- * BaseGallery actions.
+ * BaseGalleryAdmin actions.
  *
  * @package    myGalleryPlugin
- * @subpackage Gallery
  * @author     228vit
  * @version    SVN: $Id: actions.class.php 12474 2008-10-31 10:41:27Z fabien $
  */
 class BaseGalleryAdminActions extends sfActions
 {
-  
+
+  public function executeEdit(sfWebRequest $request)
+  {
+    $modelName  = $request->getParameter('model_name', '');
+    $modelId    = $request->getParameter('model_id', 0);
+    
+    // get object
+    $this->object = Doctrine_Query::create()
+            ->from("$modelName $modelName")
+            ->where("$modelName.id = ?", $modelId)
+            ->fetchOne()
+    ;
+    $this->forward404Unless($this->object);
+  }
+
   public function executeSort(sfWebRequest $request)
   {
     
     $modelName  = $request->getParameter('model_name', '');
     $modelId    = $request->getParameter('model_id', 0);
     
-//    $firstItem = Doctrine_Query::create()
-//            ->from('Gallery g')
-//            ->where('g.model_name = ?', $modelName)
-//            ->addWhere('g.model_id = ?', $modelId)
-//            ->orderBy('g.position asc')
-//            ->fetchOne()
-//    ;
     $lastItem = Doctrine_Query::create()
             ->from('Gallery g')
             ->where('g.model_name = ?', $modelName)
@@ -103,24 +109,35 @@ class BaseGalleryAdminActions extends sfActions
   {
     $id = $request->getParameter('id', 0);
     // TODO: check if pic removed
-    $res = Doctrine_Query::create()
-            ->delete('Gallery fg')
-            ->where('fg.id = ?', $id)
+    
+    $object = Doctrine::getTable('Gallery')->find($id);
+    $modelId    = $object->model_id;
+    $modelName  = $object->model_name;
+    
+    $object->delete();
+    
+    // count nb_pics in gallery
+    $gallery = Doctrine_Query::create()
+            ->from("Gallery g")
+            ->where("g.model_id = ?", $modelId)
+            ->addWhere("g.model_name = ?", $modelName)
             ->execute()
     ;
-    
+
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if ($isAjax) {
       $res = array(
           'status'  => 'success',
           'message' => 'Picture was deleted sucessfully',
           'id'      => $id,
+          'parent_id' => $modelId,
+          'nb_pics'   => count($gallery)
       );
-      $this->logMessage('id: '.$id.' Picture was deleted sucessfully', 'debug');
-
-//          echo implode(',', $res); 
+      
+      $this->logMessage('removed id: '.$request->getParameter('model_id', 0).' cnt: '.count($gallery), 'debug');
       echo json_encode($res);
       die();
+      
     } else {
       $this->getUser()->setFlash('notice', 'Picture was deleted sucessfully');
       $this->redirect($request->getReferer());
@@ -144,6 +161,7 @@ class BaseGalleryAdminActions extends sfActions
         $targetFile =  str_replace('//','/',$targetPath) . $_FILES['Filedata']['name'];
 
         $model_name = sfInflector::underscore($request->getParameter('model_name', 'nope'));
+        
         $uploadDirName  = implode('/', array_filter(array(
             sfConfig::get('sf_upload_dir'),
             'galleries',
@@ -183,14 +201,27 @@ class BaseGalleryAdminActions extends sfActions
 
         $html = get_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
         $this->logMessage('html: '.$html, 'debug');
+        
+        $modelName  = $request->getParameter('model_name', 'nope');
+        $modelId    = $request->getParameter('model_id', 0);
+        // count nb_pics in gallery
+        $gallery = Doctrine_Query::create()
+                ->from("Gallery g")
+                ->where("g.model_id = ?", $modelId)
+                ->addWhere("g.model_name = ?", $modelName)
+                ->execute()
+        ;
+        $this->logMessage('id: '.$request->getParameter('model_id', 0).' cnt: '.count($gallery), 'debug');
 
 
         $res = array(
-            'status'  => 'success',
-            'message' => $newFileName. ' file uploaded sucessfully',
-            'thumb'   => $thumb,
-            'id'      => $pic->id,
-            'html'    => $html,
+            'status'    => 'success',
+            'message'   => $newFileName. ' file uploaded sucessfully',
+            'thumb'     => $thumb,
+            'id'        => $pic->id,
+            'html'      => $html,
+            'parent_id' => $modelId,
+            'nb_pics'   => count($gallery)
         );
 
 //          echo implode(',', $res); 

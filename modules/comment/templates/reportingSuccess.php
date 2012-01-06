@@ -1,1 +1,0 @@
-<?php include_partial('comment/formReport', array('form' => $form)) ?>

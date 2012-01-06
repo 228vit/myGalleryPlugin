@@ -59,6 +59,10 @@
   //          alert(response);
             var res = eval('('+response+')'); 
             $('#status-message').text(res.message);
+            
+            // we need update pics count in list
+            $('span#nb_pics_'+res.parent_id).html(res.nb_pics)
+            
             $parent.slideUp('slow');
           },
           error: function (request, status, error) {
@@ -103,9 +107,11 @@
 //      alert('There are ' + data.fileCount + ' files remaining in the queue.');
       var res = eval('('+response+')'); // eval(response);
 //      alert('Server response is: ' + res.message)
-//      alert('Server response is: ' + response + ' message: ' + res.message);
+      alert('Server response is: ' + response + ' message: ' + res.message);
 //      var html = '<li id="pic_'+res.id+'"><img src="'+res.pic+'" />'
       $('ul.gallery').append(res.html);
+      // we need update pics count in list
+      $('span#nb_pics_'+res.parent_id).html(res.nb_pics)
       // unbind onClick again!!!
       bindDeleteAction();
     },
