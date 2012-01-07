@@ -1,0 +1,10 @@
+indexSuccess:
+  javascripts:
+    - <?php echo sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js').'/jquery.uploadify.v2.1.4.min.js'.PHP_EOL ?>
+    - <?php echo sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js').'/swfobject.js'.PHP_EOL ?>
+    - <?php echo sfConfig::get('sf_gallery_js_dir', '/myGalleryPlugin/js').'/jquery.fancybox.pack.js'.PHP_EOL ?>
+    
+  stylesheets:    
+    - <?php echo sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/jquery.fancybox.css'.PHP_EOL ?> 
+    - <?php echo sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/uploadify.css'.PHP_EOL ?> 
+    - <?php echo sfConfig::get('sf_gallery_css_dir', '/myGalleryPlugin/css'). '/gallery.css'.PHP_EOL ?> 

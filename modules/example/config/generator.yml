@@ -1,0 +1,28 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           News
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          news
+    with_doctrine_route:   true
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  ~
+      list:
+        display:            [ =id, =title, _upload, is_published, is_archive, published_at ]
+        actions: ~
+        
+      filter:  ~
+      form:
+        display:
+          NONE:             [ title, extract, is_published, published_at, pic ]
+          Content:          [ content ]
+          Gallery:          [ _gallery ]
+      edit:    ~
+      new:     ~
