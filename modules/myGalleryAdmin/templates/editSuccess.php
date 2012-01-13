@@ -1,2 +1,2 @@
-<?php include_component('galleryAdmin', 'edit', array('object' => $object)); ?>
+<?php include_component('myGalleryAdmin', 'edit', array('object' => $object)); ?>
 

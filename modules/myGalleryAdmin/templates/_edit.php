@@ -1,31 +1,31 @@
-<h1 style="margin: 0;">Галерея фото <?php // echo count($gallery); echo get_class($object->getRawValue())  ?></h1>
+<?php use_helper('I18N') ?>
+<h1 style="margin: 0;"><?php echo __('Gallery') ?></h1>
 <div>
 <ul class='gallery'>
 <?php if (isSet($gallery)): ?>
   <?php foreach ($gallery as $pic): ?>
     <?php $path = implode('/', array_filter(array('uploads', 'galleries', $model_name, $pic->pic))); ?>
-    <?php include_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path)) ?>
+    <?php include_partial('myGalleryAdmin/thumb', array('pic' => $pic, 'path' => $path)) ?>
   <?php endforeach; // ($gallery as $g): ?>
 <?php endif; // ($gallery): ?>
 </ul>
 </div>
 <br clear="all" />
   
-<div id="status-message">Select some files to upload:</div>
+<div id="status-message"><?php echo __('Select some files to upload') ?>:</div>
 <div id="custom-queue"></div>
 <div id="gallery"></div>
 
 <form>
   <input id="file_upload" type="file" name="upload[pic]" />
   <br />
-  <a href="javascript:$('#file_upload').uploadifyUpload();">Upload Files</a>
+  <!--a href="javascript:$('#file_upload').uploadifyUpload();">Upload Files</a-->
 </form>
 <script type="text/javascript">
   function bindDeleteAction() {
 		$( "ul.gallery" ).sortable({
-//      stop: function(event, ui) {
-//          alert("New position: " + ui.item.index());
-//      },      
+      stop: function(event, ui) {
+      },      
       update : function () { 
         $.ajax({
           url: "<?php echo url_for(array(
@@ -35,7 +35,6 @@
                 )) ?>",
           data: $(this).sortable('serialize'),
           success: function(response) {
-//            alert(response);
             var res = eval('('+response+')'); 
             
             $('#status-message').text(res.message);
@@ -50,12 +49,11 @@
     
     $('ul.gallery a.delLink').attr('onclick','');
     $('ul.gallery a.delLink').click(function (){
-      if (confirm('Вы уверены?')) {
+      if (confirm('<?php echo __('Are you sure?') ?>')) {
         var $parent = $(this).parent();
         $.ajax({
           url: $(this).attr('href'),
           success: function(response) {
-  //          alert(response);
             var res = eval('('+response+')'); 
             $('#status-message').text(res.message);
             
@@ -76,27 +74,27 @@
   bindDeleteAction();
   
   $('#file_upload').uploadify({
-    'uploader'      : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/uploadify.swf' ?>",
+    'uploader'      : "<?php echo sfConfig::get('app_gallery_uploadify_dir', '/myGalleryPlugin/uploadify').'/uploadify.swf' ?>",
     'script'        : "<?php echo url_for(array(
         'sf_route'    => 'gallery_upload_pics',
         'model_id'    => $object->get('id'), 
-        'model_name' => get_class($object->getRawValue()),
+        'model_name'  => get_class($object->getRawValue()),
     )) ?>",
     'scriptData'  : {
       'model_name':   "<?php echo get_class($object->getRawValue()) ?>",
       'model_id':     "<?php echo $object->get('id') ?>"
     },         
-    'cancelImg'     : "<?php echo sfConfig::get('sf_gallery_uploadyfy_dir', '/myGalleryPlugin/uploadify').'/cancel.png' ?>",
+    'cancelImg'     : "<?php echo sfConfig::get('app_gallery_uploadify_dir', '/myGalleryPlugin/uploadify').'/cancel.png' ?>",
     'folder'        : '/uploads',
     'multi'         : true,
     'auto'          : true,
-//    'buttonText'      : 'Выбрать файлы',
+    'buttonText'      : 'Browse',
     'fileExt'         : '*.jpg;*.gif;*.png',
     'fileDesc'        : 'Image Files (.JPG, .GIF, .PNG)',
     'queueID'         : 'custom-queue',
     'queueSizeLimit'  : 12,
     'simUploadLimit'  : 3,
-    'sizeLimit'       : 204800,
+    'sizeLimit'       : <?php echo sfConfig::get('app_gallery_pic_size_limit', 204800) ?>,
     'removeCompleted' : true,
     'onSelectOnce'    : function(event,data) {
         $('#status-message').text(data.filesSelected + ' files have been added to the queue.');
@@ -111,7 +109,6 @@
         // unbind onClick again!!!
         bindDeleteAction();
       } else if (res.status == 'error') {
-        alert(res.message);
         $('#status-message').text(res.message);
         data.errors++;
         data.filesUploaded--;

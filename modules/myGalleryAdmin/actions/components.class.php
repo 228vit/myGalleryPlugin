@@ -9,6 +9,6 @@ require_once dirname(__FILE__).'/../lib/BaseGalleryAdminComponents.class.php';
  * @author     228vit
  * @version    SVN: $Id: actions.class.php 12474 2008-10-31 10:41:27Z fabien $
  */
-class GalleryAdminComponents extends BaseGalleryAdminComponents
+class MyGalleryAdminComponents extends BaseGalleryAdminComponents
 {
 }

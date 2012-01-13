@@ -203,7 +203,7 @@ class BaseGalleryAdminActions extends sfActions
 
           $thumb = thumbnail_crop($path, 50, 50, 'fake-pic.jpg', 'watermark-25.png');
 
-          $html = get_partial('galleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
+          $html = get_partial('myGalleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
           $this->logMessage('html: '.$html, 'debug');
 
           $modelName  = $request->getParameter('model_name', 'nope');

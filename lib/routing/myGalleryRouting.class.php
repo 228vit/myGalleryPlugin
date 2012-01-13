@@ -29,7 +29,7 @@ class myGalleryRouting
       'gallery_upload_pics',
       new sfRoute(
         '/gallery_upload_pics',
-        array('module' => 'galleryAdmin', 'action' => 'flashUploadPics')
+        array('module' => 'myGalleryAdmin', 'action' => 'flashUploadPics')
       )
     );
     
@@ -37,18 +37,10 @@ class myGalleryRouting
       'gallery_sort_pics',
       new sfRoute(
         '/gallery_sort_pics',
-        array('module' => 'galleryAdmin', 'action' => 'sort')
+        array('module' => 'myGalleryAdmin', 'action' => 'sort')
       )
     );
     
-    $r->prependRoute(
-            'comment_reporting',
-            new sfRoute(
-                    '/report-a-comment/:id/:num',
-                    array('module' => 'comment', 'action' => 'reporting'),
-                    array('id' => '\d+', 'num' => '\d+')
-            )
-    );
   }
 
   /**
@@ -69,21 +61,4 @@ class myGalleryRouting
     )));
   }
 
-  /**
-   * Adds an sfDoctrineRouteCollection collection to manage reported comments.
-   *
-   * @param sfEvent $event
-   * @static
-   */
-  static public function addRouteForAdminReportedComments(sfEvent $event)
-  {
-    $event->getSubject()->prependRoute('commentReportAdmin', new sfDoctrineRouteCollection(array(
-      'name'                => 'commentReportAdmin',
-      'model'               => 'CommentReport',
-      'module'              => 'commentReportAdmin',
-      'prefix_path'         => 'admin-for-reported-comments',
-      'with_wildcard_routes' => true,
-      'requirements'        => array(),
-    )));
-  }
 }
