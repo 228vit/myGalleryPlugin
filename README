@@ -12,7 +12,7 @@ Installation
 
   * Install the plugin
 
-        $ git clone git@github.com:228vit/myGalleryPlugin.git plugins/myGalleryPlugin
+        $ git clone git://github.com:228vit/myGalleryPlugin.git plugins/myGalleryPlugin
         $ ./symfony plugin:publish-assets
         $ ./symfony cc
 
@@ -53,7 +53,7 @@ Activate modules in backend
 
   * edit apps/backend/config/settings.yml
 
-        enabled_modules:        [..., galleryAdmin]
+        enabled_modules:        [..., myGalleryAdmin]
 
   * edit apps/backend/modules/news/config/generator.yml
       list:
