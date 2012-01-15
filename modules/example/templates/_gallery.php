@@ -1,1 +1,1 @@
-<?php include_component('galleryAdmin', 'edit', array('object' => $form->getObject())); ?>
+<?php include_component('myGalleryAdmin', 'edit', array('object' => $form->getObject())); ?>
