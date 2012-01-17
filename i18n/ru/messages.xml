@@ -6,7 +6,7 @@
     <body>
       <trans-unit>
         <source>Gallery</source>
-        <target>Галерея фотогруфий</target>
+        <target>Галерея фотографий</target>
       </trans-unit>
       <trans-unit>
         <source>Select some files to upload</source>
