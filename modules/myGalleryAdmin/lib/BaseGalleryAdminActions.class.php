@@ -200,8 +200,9 @@ class BaseGalleryAdminActions extends sfActions
           $this->logMessage('id: '.$request->getParameter('model_id', 0).' uploaded file: '.$newFileName , 'debug');
 
           $path = implode('/', array_filter(array('uploads', 'galleries', $model_name, $newFileName)));
-
-//          $thumb = thumbnail_crop($path, 50, 50, 'fake-pic.jpg', 'watermark-25.png');
+          
+//          $helper = sfConfig::get('app_my_gallery_thumb_helper', 'thumbnail_crop_watermarked'); 
+//          $thumb = $helper($path, 50, 50, 'fake-pic.jpg', 'watermark-800.png');
 
           $html = get_partial('myGalleryAdmin/thumb', array('pic' => $pic, 'path' => $path, 'id' => $pic->id));
           $this->logMessage('html: '.$html, 'debug');
@@ -221,7 +222,7 @@ class BaseGalleryAdminActions extends sfActions
           $res = array(
               'status'    => 'success',
               'message'   => $newFileName. ' file uploaded sucessfully',
-              'thumb'     => $thumb,
+//              'thumb'     => $thumb,
               'id'        => $pic->id,
               'html'      => $html,
               'parent_id' => $modelId,
