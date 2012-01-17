@@ -54,7 +54,6 @@ class BaseGalleryAdminActions extends sfActions
       $conn = Doctrine_Manager::connection();
       $conn->beginTransaction();
       
-//      foreach ($objects as $object) {
       foreach ($pics as $id) {
         $object = Doctrine_Core::getTable('Gallery')->find($id);
         if ($object)
@@ -64,7 +63,6 @@ class BaseGalleryAdminActions extends sfActions
         } else {
             $this->logMessage('unexisting id detected: '.$id , 'error');
         }
-//      $object->moveToPosition((int)$lastItem->position);
       }
       // commit transactions, if any in a stack
       $conn->commit();

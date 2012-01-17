@@ -63,6 +63,11 @@ Activate modules in backend
           NONE:             [ title, extract, is_published, published_at, pic ]
           Content:          [ content ]
           Gallery:          [ _gallery ]
+  * edit app.yml
+    all:
+      my_gallery:
+        thumb_helper: thumbnail_crop # thumbnail_crop_watermarked, thumbnail_crop, thumbnail_resize
+
   
   * copy templates dir from plugins/myGalleryPlugin/modules/example/templates to apps/backend/modules/news/templates 
   
@@ -83,7 +88,7 @@ Activate module in frontend
 
   * edit apps/frontend/config/settings.yml
 
-        enabled_modules:        [..., gallery]
+        enabled_modules:        [..., myGallery]
 
 Add the form and/or the list of gallerys wherever you want
 
