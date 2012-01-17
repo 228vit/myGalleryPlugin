@@ -3,7 +3,7 @@
 <div>
 <ul class='gallery'>
   <?php foreach ($gallery as $g): ?>
-    <?php echo $g->id; include_partial('gallery/thumb', array('thumb' => $g, 'id' => $sf_params->get('id', 0))) ?>
+    <?php echo $g->id; include_partial('myGalleryAdmin/thumb', array('thumb' => $g, 'id' => $sf_params->get('id', 0))) ?>
   <?php endforeach; // ($gallery as $g): ?>
 </ul>
 </div>
@@ -46,7 +46,6 @@
   
   $('#file_upload').uploadify({
     'uploader'      : '/uploadify/uploadify.swf',
-//    'script'    : '/uploadify/uploadify.php',
     'script'        : "<?php echo url_for('/backend_dev.php/gallery/flashUploadPics?id='.$sf_params->get('id', 0)) ?>",
     'cancelImg'     : '/uploadify/cancel.png',
     'folder'        : '/uploads',
