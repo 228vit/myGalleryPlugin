@@ -11,6 +11,6 @@ class Galleryable_Listener extends Doctrine_Record_Listener
 
   public function postDelete(Doctrine_Event $event)
   {
-    $event->getInvoker()->getAllGallerys()->delete();
+    $event->getInvoker()->getGallery()->delete();
   }
 }
